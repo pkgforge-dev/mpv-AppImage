@@ -21,7 +21,7 @@ jobs:
         liblua5.2-dev libxkbcommon-dev libxcb-xfixes0-dev equivs libavutil-dev \
         libavcodec-dev libswscale-dev python3-dev cython3 g++ nasm yasm git \
         libavfilter-dev libxmu-dev libxcb1-dev libdbus-1-dev libx11-dev \
-        libxinerama-dev libxrandr-dev intltool libtool libwayland-dev \
+        libxinerama-dev libxrandr-dev intltool libtool libwayland-dev libarchive-dev \
         wayland-protocols devscripts libass-dev libx264-dev libxss-dev \
         libglib2.0-dev libpango1.0-dev binutils libxdg-basedir-dev libnotify-dev \
         libc++-dev libplacebo-dev libx265-dev ninja-build meson autotools-dev \
