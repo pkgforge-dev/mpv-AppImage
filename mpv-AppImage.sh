@@ -10,7 +10,7 @@ set -eu
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
 REPO="https://github.com/mpv-player/mpv-build.git"
-APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
+APPIMAGETOOL="https://github.com/pkgforge-dev/appimagetool-uruntime/releases/download/continuous/appimagetool-$ARCH.AppImage"
 UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|mpv-AppImage|latest|*$ARCH.AppImage.zsync"
 LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
 mkdir -p ./mpv/AppDir
