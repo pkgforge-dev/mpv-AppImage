@@ -10,7 +10,7 @@ set -eu
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
 REPO="https://github.com/mpv-player/mpv-build.git"
-APPIMAGETOOL="https://github.com/pkgforge-dev/appimagetool-uruntime/releases/download/continuous/appimagetool-$ARCH.AppImage"
+URUNTIME="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-$ARCH"
 UPINFO="gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|mpv-AppImage|latest|*$ARCH.AppImage.zsync"
 LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
 mkdir -p ./mpv/AppDir
@@ -77,13 +77,39 @@ fi
 EOF
 chmod +x ./AppRun
 
-# make appimage
+# MAKE APPIMAGE WITH URUNTIME
 cd ..
-wget -q "$APPIMAGETOOL" -O ./appimagetool
-chmod +x ./appimagetool
-./appimagetool --comp zstd \
-	--mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
-	-n -u "$UPINFO" "$PWD"/AppDir "$PWD"/mpv-"$VERSION"-anylinux-"$ARCH".AppImage
+wget -q "$URUNTIME" -O ./uruntime
+chmod +x ./uruntime
+
+# Keep the mount point (speeds up launch time)
+sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime
+
+#Add udpate info to runtime
+echo "Adding update information \"$UPINFO\" to runtime..."
+./uruntime --appimage-addupdinfo "$UPINFO"
+
+echo "Generating AppImage..."
+./uruntime --appimage-mkdwarfs -f \
+	--set-owner 0 --set-group 0 \
+	--no-history --no-create-timestamp \
+	--compression zstd:level=22 -S26 -B32 \
+	--header uruntime \
+	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
+
+wget -qO ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH" 
+chmod +x ./pelf
+echo "Generating [dwfs]AppBundle...(Go runtime)"
+./pelf --add-appdir ./AppDir \
+	--appbundle-id="mpv-$VERSION" \
+	--compression "-C zstd:level=22 -S25 -B32" \
+	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
+
+echo "Generating zsync file..."
+zsyncmake *.AppImage -u *.AppImage
+zsyncmake *.AppBundle -u *.AppBundle
+
 mv ./*.AppImage* ../
+mv ./*.AppBundle* ../
 cd ..
 echo "All done!"
