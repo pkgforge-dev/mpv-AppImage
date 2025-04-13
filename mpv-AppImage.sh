@@ -17,6 +17,7 @@ LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bi
 # Build mpv
 git clone "$REPO" ./mpv-build && (
 	cd ./mpv-build
+	printf "%s\n" "--enable-libdav1d" >> ffmpeg_options
 	./rebuild -j$(nproc)
 	sudo ./install
 )
