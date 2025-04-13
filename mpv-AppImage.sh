@@ -18,7 +18,7 @@ LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bi
 git clone "$REPO" ./mpv-build && (
 	cd ./mpv-build
 	./rebuild -j$(nproc)
-	./install
+	sudo ./install
 )
 rm -rf ./mpv-build
 
