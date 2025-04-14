@@ -5,7 +5,7 @@ concurrency:
 
 on:
   schedule:
-    - cron: "0 14 * * 0"
+    - cron: "0 10 * * 0"
   workflow_dispatch:
 
 jobs:
@@ -16,61 +16,11 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install dependencies
       run: |
-        sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
-        pacman -Syu --noconfirm base-devel strace patchelf curl wget pulseaudio pulseaudio-alsa \
-          desktop-file-utils git artix-archlinux-support llvm mesa xorg-server-xvfb
-        pacman-key --init && pacman-key --populate archlinux
-        printf "\n[extra]\nInclude = /etc/pacman.d/mirrorlist-arch\n" | tee -a /etc/pacman.conf
-        pacman -Syu --noconfirm \
-          alsa-lib \
-          desktop-file-utils \
-          ffmpeg \
-          glibc \
-          hicolor-icon-theme \
-          jack \
-          lcms2 \
-          libarchive \
-          libass \
-          libbluray \
-          libcdio \
-          libcdio-paranoia \
-          libdrm \
-          libdvdnav \
-          libdvdread \
-          libegl \
-          libgl \
-          libglvnd \
-          libjpeg-turbo \
-          libplacebo \
-          libpulse \
-          libsixel \
-          libva \
-          libvdpau \
-          libx11 \
-          libxext \
-          libxkbcommon \
-          libxpresent \
-          libxrandr \
-          libxss \
-          libxv \
-          luajit \
-          mesa \
-          meson \
-          nasm \
-          libpipewire \
-          rubberband \
-          openal \
-          uchardet \
-          vulkan-headers \
-          vulkan-icd-loader \
-          wayland \
-          wayland-protocols \
-          zlib \
-          zsync
+        chmod +x ./get-dependencies.sh && ./get-dependencies.sh
 
     - name: Make AppImage
       run: |
-        chmod a+x ./mpv-appimage.sh && ./mpv-appimage.sh
+        chmod +x ./mpv-appimage.sh && ./mpv-appimage.sh
         mkdir dist
         mv *.AppImage* dist/
         mv *.AppBundle* dist/
