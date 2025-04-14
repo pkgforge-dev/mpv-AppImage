@@ -78,5 +78,10 @@ wget --retry-connrefused --tries=30 "$LIBXML_URL" -O ./libxml2-iculess.pkg.tar.z
 wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O ./ffmpeg-mini-x86_64.pkg.tar.zst
 pacman -U --noconfirm ./libxml2-iculess.pkg.tar.zst ./ffmpeg-mini-x86_64.pkg.tar.zst
 rm -f ./libxml2-iculess.pkg.tar.zst ./ffmpeg-mini-x86_64.pkg.tar.zst
+
+# Remove vapoursynth since ffmpeg-mini doesn't link to it
+pacman -Rsndd --noconfirm vapoursynth
+
 echo "All done!"
 echo "---------------------------------------------------------------"
+
