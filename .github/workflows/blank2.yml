@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    container: artixlinux/artixlinux:latest
+    container: archlinux:latest
     steps:
     - uses: actions/checkout@v4
     - name: Install dependencies
