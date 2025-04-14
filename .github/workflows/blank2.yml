@@ -1,36 +1,78 @@
-name: mpv AppImage2
+name: mpv AppImage
 concurrency:
   group: build-${{ github.ref }}
   cancel-in-progress: true
 
 on:
   schedule:
-    - cron: "0 16 1/7 * *"
+    - cron: "0 14 * * 0"
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-24.04
+    container: artixlinux/artixlinux:latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: build
+    - name: Install dependencies
       run: |
-        sudo apt update
-        sudo apt install libxpresent-dev libpulse-dev libxcb-shm0-dev libvpx-dev \
-        liblua5.2-dev libxkbcommon-dev libxcb-xfixes0-dev equivs libavutil-dev \
-        libavcodec-dev libswscale-dev python3-dev cython3 g++ nasm yasm git \
-        libavfilter-dev libxmu-dev libxcb1-dev libdbus-1-dev libx11-dev \
-        libxinerama-dev libxrandr-dev intltool libtool libwayland-dev libarchive-dev \
-        wayland-protocols devscripts libass-dev libx264-dev libxss-dev libdav1d-dev \
-        libglib2.0-dev libpango1.0-dev binutils libxdg-basedir-dev libnotify-dev \
-        libc++-dev libplacebo-dev libx265-dev ninja-build meson autotools-dev \
-        autoconf automake make build-essential pkg-config desktop-file-utils zsync
+        sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
+        pacman -Syu --noconfirm base-devel strace patchelf curl wget pulseaudio pulseaudio-alsa \
+          desktop-file-utils git artix-archlinux-support llvm mesa xorg-server-xvfb
+        pacman-key --init && pacman-key --populate archlinux
+        printf "\n[extra]\nInclude = /etc/pacman.d/mirrorlist-arch\n" | tee -a /etc/pacman.conf
+        pacman -Syu --noconfirm \
+          alsa-lib \
+          desktop-file-utils \
+          ffmpeg \
+          glibc \
+          hicolor-icon-theme \
+          jack \
+          lcms2 \
+          libarchive \
+          libass \
+          libbluray \
+          libcdio \
+          libcdio-paranoia \
+          libdrm \
+          libdvdnav \
+          libdvdread \
+          libegl \
+          libgl \
+          libglvnd \
+          libjpeg-turbo \
+          libplacebo \
+          libpulse \
+          libsixel \
+          libva \
+          libvdpau \
+          libx11 \
+          libxext \
+          libxkbcommon \
+          libxpresent \
+          libxrandr \
+          libxss \
+          libxv \
+          luajit \
+          mesa \
+          meson \
+          nasm \
+          libpipewire \
+          rubberband \
+          openal \
+          uchardet \
+          vulkan-headers \
+          vulkan-icd-loader \
+          wayland \
+          wayland-protocols \
+          zlib \
+          zsync
 
-        chmod a+x ./mpv-AppImage.sh && ./mpv-AppImage.sh
+    - name: Make AppImage
+      run: |
+        chmod a+x ./mpv-appimage.sh && ./mpv-appimage.sh
         mkdir dist
         mv *.AppImage* dist/
-        mv *.AppBundle* dist/
 
     - name: Check version file
       run: |
@@ -87,7 +129,6 @@ jobs:
             make_latest: true
             files: |
               *.AppImage*
-              *.AppBundle*
           continue-on-error: false
 
         #Snapshot Release
@@ -107,5 +148,4 @@ jobs:
             make_latest: false
             files: |
               *.AppImage*
-              *.AppBundle*
           continue-on-error: false
