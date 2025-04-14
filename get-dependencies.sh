@@ -74,7 +74,7 @@ pacman -Syu --noconfirm \
 echo "Installing debloated pckages..."
 echo "---------------------------------------------------------------"
 wget --retry-connrefused --tries=30 "$LIBXML_URL" -O ./libxml2-iculess.pkg.tar.zst
-pacman -U --noconfirm ./libxml2-iculess.pkg.tar.zst \
-rm -f ./libxml2-iculess.pkg.tar.zst \
+pacman -U --noconfirm ./libxml2-iculess.pkg.tar.zst
+rm -f ./libxml2-iculess.pkg.tar.zst
 echo "All done!"
 echo "---------------------------------------------------------------"
