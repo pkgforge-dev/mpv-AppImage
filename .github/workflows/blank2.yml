@@ -73,24 +73,25 @@ jobs:
         chmod a+x ./mpv-appimage.sh && ./mpv-appimage.sh
         mkdir dist
         mv *.AppImage* dist/
+        mv *.AppBundle* dist/
 
     - name: Check version file
       run: |
        cat ~/version
        echo "APP_VERSION=$(cat ~/version)" >> "${GITHUB_ENV}"
-    
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4.5.0
       with:
         name: AppImage
         path: 'dist'
-        
+
     - name: Upload version file
       uses: actions/upload-artifact@v4.5.0
       with:
        name: version
        path: ~/version
-    
+
   release:
       needs: [build]
       permissions: write-all
@@ -109,7 +110,7 @@ jobs:
             cat version
             export VERSION="$(<version)"
             echo "APP_VERSION=${VERSION}" >> "${GITHUB_ENV}"
-    
+
         #Version Release
         - name: Del Previous Release
           run: |
@@ -129,6 +130,7 @@ jobs:
             make_latest: true
             files: |
               *.AppImage*
+              *.AppBundle*
           continue-on-error: false
 
         #Snapshot Release
@@ -148,4 +150,5 @@ jobs:
             make_latest: false
             files: |
               *.AppImage*
+              *.AppBundle*
           continue-on-error: false
