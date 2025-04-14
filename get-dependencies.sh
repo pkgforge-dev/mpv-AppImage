@@ -11,6 +11,7 @@ else
 fi
 LIBXML_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/libxml2-iculess-$PKG_TYPE"
 FFMPEG_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/ffmpeg-mini-$PKG_TYPE"
+OPUS_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/opus-nano-$PKG_TYPE"
 
 echo "Installing build dependencies..."
 echo "---------------------------------------------------------------"
@@ -75,13 +76,13 @@ pacman -Syu --noconfirm \
 echo "Installing debloated pckages..."
 echo "---------------------------------------------------------------"
 wget --retry-connrefused --tries=30 "$LIBXML_URL" -O ./libxml2-iculess.pkg.tar.zst
-wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O ./ffmpeg-mini-x86_64.pkg.tar.zst
-pacman -U --noconfirm ./libxml2-iculess.pkg.tar.zst ./ffmpeg-mini-x86_64.pkg.tar.zst
-rm -f ./libxml2-iculess.pkg.tar.zst ./ffmpeg-mini-x86_64.pkg.tar.zst
+wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O ./ffmpeg-mini.pkg.tar.zst
+wget --retry-connrefused --tries=30 "$OPUS_URL" -O ./opus-nano.pkg.tar.zst
+pacman -U --noconfirm ./*.pkg.tar.zst
+rm -f ./*.pkg.tar.zst
 
 # Remove vapoursynth since ffmpeg-mini doesn't link to it
 pacman -Rsndd --noconfirm vapoursynth
 
 echo "All done!"
 echo "---------------------------------------------------------------"
-
