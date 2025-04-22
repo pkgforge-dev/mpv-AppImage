@@ -33,7 +33,7 @@ jobs:
       run: |
         chmod +x ./mpv-appimage.sh && ./mpv-appimage.sh
         mkdir dist
-        mv *.AppImage* *.AppBundle* dist/
+        mv *.AppImage* dist/
 
     - name: Check version file
       if: ${{ matrix.arch == 'x86_64' }}
