@@ -89,7 +89,7 @@ echo "Generating AppImage..."
 	--header uruntime \
 	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 
-wget -qO ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
+wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
 chmod +x ./pelf
 
 echo "Generating [dwfs]AppBundle...(Go runtime)"
