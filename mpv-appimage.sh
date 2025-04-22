@@ -39,9 +39,6 @@ if [ -z "$VERSION" ]; then
 fi
 echo "$VERSION" > ~/version
 
-# HACK
-sed -i 's|/usr|/KEK|g' ./shared/lib/ld-linux-x86-64.so.2
-
 # prepare AppDir
 cp /usr/local/share/applications/mpv.desktop ./
 cp /usr/local/share/icons/hicolor/128x128/apps/mpv.png ./
