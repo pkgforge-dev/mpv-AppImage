@@ -6,7 +6,7 @@
 # libxscrnsaver libxscrnsaver-dev xscreensaver-gl-extras jack libpulse pulseaudio-dev
 # rubberband libcaca mesa-egl libxpresent-dev lua5.3-dev libxcb-dev desktop-file-utils
 
-set -eu
+set -eux
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
 REPO="https://github.com/mpv-player/mpv-build.git"
