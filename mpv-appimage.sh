@@ -6,7 +6,7 @@
 # libxscrnsaver libxscrnsaver-dev xscreensaver-gl-extras jack libpulse pulseaudio-dev
 # rubberband libcaca mesa-egl libxpresent-dev lua5.3-dev libxcb-dev desktop-file-utils
 
-set -eu
+set -eux
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
 REPO="https://github.com/mpv-player/mpv-build.git"
@@ -38,9 +38,6 @@ if [ -z "$VERSION" ]; then
 	exit 1
 fi
 echo "$VERSION" > ~/version
-
-# HACK
-sed -i 's|/usr|/KEK|g' ./shared/lib/ld-linux-x86-64.so.2
 
 # prepare AppDir
 cp /usr/local/share/applications/mpv.desktop ./
@@ -74,7 +71,7 @@ chmod +x ./AppRun
 
 # MAKE APPIMAGE WITH URUNTIME
 cd ..
-wget -q "$URUNTIME" -O ./uruntime
+wget "$URUNTIME" -O ./uruntime
 chmod +x ./uruntime
 
 # Keep the mount point (speeds up launch time)
@@ -92,7 +89,7 @@ echo "Generating AppImage..."
 	--header uruntime \
 	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 
-wget -qO ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
+wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
 chmod +x ./pelf
 
 echo "Generating [dwfs]AppBundle...(Go runtime)"
