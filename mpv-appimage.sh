@@ -89,17 +89,17 @@ echo "Generating AppImage..."
 	--header uruntime \
 	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 
-#wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
-#chmod +x ./pelf
+wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
+chmod +x ./pelf
 
-#echo "Generating [dwfs]AppBundle...(Go runtime)"
-#./pelf --add-appdir ./AppDir \
-#	--appbundle-id="mpv-$VERSION" \
-#	--compression "-C zstd:level=22 -S26 -B8" \
-#	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
+echo "Generating [dwfs]AppBundle...(Go runtime)"
+./pelf --add-appdir ./AppDir \
+	--appbundle-id="mpv-$VERSION" \
+	--compression "-C zstd:level=22 -S26 -B8" \
+	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
 
 echo "Generating zsync file..."
 zsyncmake *.AppImage -u *.AppImage
-#zsyncmake *.AppBundle -u *.AppBundle
+zsyncmake *.AppBundle -u *.AppBundle
 
 echo "All done!"
