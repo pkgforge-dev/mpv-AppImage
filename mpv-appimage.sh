@@ -72,22 +72,23 @@ chmod +x ./AppRun
 
 # MAKE APPIMAGE WITH URUNTIME
 cd ..
-wget "$URUNTIME" -O ./uruntime
-chmod +x ./uruntime
+wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime
+wget --retry-connrefused --tries=30 "$URUNTIME_LITE" -O ./uruntime-lite
+chmod +x ./uruntime*
 
 # Keep the mount point (speeds up launch time)
-sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime
+sed -i 's|URUNTIME_MOUNT=[0-9]|URUNTIME_MOUNT=0|' ./uruntime-lite
 
 #Add udpate info to runtime
 echo "Adding update information \"$UPINFO\" to runtime..."
-./uruntime --appimage-addupdinfo "$UPINFO"
+./uruntime-lite --appimage-addupdinfo "$UPINFO"
 
 echo "Generating AppImage..."
 ./uruntime --appimage-mkdwarfs -f \
 	--set-owner 0 --set-group 0 \
 	--no-history --no-create-timestamp \
 	--compression zstd:level=22 -S26 -B8 \
-	--header uruntime \
+	--header uruntime-lite \
 	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 
 wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
