@@ -49,6 +49,7 @@ cat >> ./AppRun << 'EOF'
 CURRENTDIR="$(dirname "$(readlink -f "$0")")"
 CACHEDIR="${XDG_CACHE_HOME:-$HOME/.cache}"
 export PATH="$PATH:$CACHEDIR/mpv-appimage_yt-dlp"
+export SHARUN_ALLOW_SYS_VKICD=1
 
 # Download yt-dlp if needed
 if echo "$@" | grep -q "http" && ! command -v yt-dlp >/dev/null 2>&1; then
