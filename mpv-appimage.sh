@@ -97,7 +97,7 @@ chmod +x ./pelf
 
 echo "Generating [dwfs]AppBundle...(Go runtime)"
 ./pelf --add-appdir ./AppDir \
-	--appbundle-id="mpv-$VERSION" \
+	--appbundle-id="io.mpv.Mpv#github.com/$GITHUB_REPOSITORY:$VERSION@$(date +%d_%m_%Y)" \
 	--compression "-C zstd:level=22 -S26 -B8" \
 	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
 
