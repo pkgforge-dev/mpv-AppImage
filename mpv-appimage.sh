@@ -44,7 +44,6 @@ echo "$VERSION" > ~/version
 cp /usr/local/share/applications/mpv.desktop ./
 cp /usr/local/share/icons/hicolor/128x128/apps/mpv.png ./
 ln -s ./mpv.png ./.DirIcon
-echo "$VERSION" >./.version
 
 cat >> ./AppRun << 'EOF'
 #!/bin/sh
@@ -98,7 +97,8 @@ chmod +x ./pelf
 
 echo "Generating [dwfs]AppBundle...(Go runtime)"
 ./pelf --add-appdir ./AppDir \
-	--appbundle-id="io.mpv.Mpv-$(date +%d_%m_%Y)-Samueru-sama" \
+        # nameOrAppStreamID#repo:version@date
+	--appbundle-id="io.mpv.Mpv#github.com/pkgforge-dev/mpv-AppImage:$VERSION@$(date +%d_%m_%Y)" \
 	--compression "-C zstd:level=22 -S26 -B8" \
 	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
 
