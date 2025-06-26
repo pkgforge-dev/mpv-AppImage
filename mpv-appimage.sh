@@ -92,12 +92,15 @@ echo "Generating AppImage..."
 	--header uruntime-lite \
 	-i ./AppDir -o ./mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 
+UPINFO="$(echo "$UPINFO" | sed 's#.AppImage#*.AppBundle#g')"
 wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
 chmod +x ./pelf
-
-echo "Generating [dwfs]AppBundle...(Go runtime)"
+echo "Generating [dwfs]AppBundle..."
 ./pelf --add-appdir ./AppDir \
 	--appbundle-id="io.mpv.Mpv#github.com/$GITHUB_REPOSITORY:$VERSION@$(date +%d_%m_%Y)" \
+	--appimage-compat \
+	--disable-use-random-workdir \
+	--add-updinfo "$UPINFO" \
 	--compression "-C zstd:level=22 -S26 -B8" \
 	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
 
