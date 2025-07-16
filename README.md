@@ -1,4 +1,11 @@
-# mpv AppImage
+# mpv-AppImage 🐧
+
+[![GitHub Downloads](https://img.shields.io/github/downloads/pkgforge-dev/mpv-AppImage/total?logo=github&label=GitHub%20Downloads)](https://github.com/pkgforge-dev/mpv-AppImage/releases/latest)
+[![CI Build Status](https://github.com//pkgforge-dev/mpv-AppImage/actions/workflows/blank2.yml/badge.svg)](https://github.com/pkgforge-dev/mpv-AppImage/releases/latest)
+
+* [Latest Release](https://github.com/pkgforge-dev/mpv-AppImage/releases/latest)
+
+---
 
 Unofficial AppImage of mpv: https://github.com/mpv-player/mpv
 
