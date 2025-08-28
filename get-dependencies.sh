@@ -50,16 +50,17 @@ wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
 chmod +x ./get-debloated-pkgs.sh
 ./get-debloated-pkgs.sh --add-mesa --prefer-nano ffmpeg-mini libxml2-mini opus-mini
 
-pacman -Rsndd --noconfirm vapoursynth # ffmpeg-mini doesn't link to it
-
 echo "Building mpv..."
 echo "---------------------------------------------------------------"
 git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build 
 
 cd ./mpv-build
-printf "%s\n" "--enable-libdav1d" >> ffmpeg_options
-printf "%s\n" "--enable-small" >> ffmpeg_options
-printf "%s\n" "-Dlibmpv=false" >> mpv_options
+echo "--enable-libdav1d"   >> ffmpeg_options
+echo "--enable-small"      >> ffmpeg_options
+echo "-Dlibmpv=false"      >> mpv_options
+echo "-Dlibbluray=false"   >> mpv_options
+echo "-Dvapoursynth=false" >> mpv_options
+
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
 
