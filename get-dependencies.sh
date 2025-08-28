@@ -7,7 +7,9 @@ echo "Installing build dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
 	base-devel        \
+	dav1d             \
 	git               \
+	lame              \
 	lcms2             \
 	libarchive        \
 	libass            \
@@ -16,7 +18,9 @@ pacman -Syu --noconfirm \
 	libdrm            \
 	libdvdnav         \
 	libdvdread        \
+	libfdk-aac        \
 	libjpeg-turbo     \
+	libogg            \
 	libplacebo        \
 	libpulse          \
 	libsixel          \
