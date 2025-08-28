@@ -1,88 +1,76 @@
 #!/bin/sh
 
 set -ex
-
-sed -i 's/DownloadUser/#DownloadUser/g' /etc/pacman.conf
-
-if [ "$(uname -m)" = 'x86_64' ]; then
-	PKG_TYPE='x86_64.pkg.tar.zst'
-else
-	PKG_TYPE='aarch64.pkg.tar.xz'
-fi
-LIBXML_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/libxml2-iculess-$PKG_TYPE"
-FFMPEG_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/ffmpeg-mini-$PKG_TYPE"
-OPUS_URL="https://github.com/pkgforge-dev/llvm-libs-debloated/releases/download/continuous/opus-nano-$PKG_TYPE"
+EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/get-debloated-pkgs.sh"
 
 echo "Installing build dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-  alsa-lib \
-  base-devel \
-  desktop-file-utils \
-  ffmpeg \
-  git \
-  glibc \
-  hicolor-icon-theme \
-  jack \
-  lcms2 \
-  libarchive \
-  libass \
-  libbluray \
-  libcdio \
-  libcdio-paranoia \
-  libdrm \
-  libdvdnav \
-  libdvdread \
-  libegl \
-  libgl \
-  libglvnd \
-  libjpeg-turbo \
-  libplacebo \
-  libpulse \
-  libsixel \
-  libva \
-  libvdpau \
-  libx11 \
-  libxext \
-  libxkbcommon \
-  libxpresent \
-  libxrandr \
-  libxss \
-  libxv \
-  luajit \
-  mesa \
-  meson \
-  nasm \
-  patchelf \
-  libpipewire \
-  rubberband \
-  openal \
-  uchardet \
-  vulkan-headers \
-  vulkan-icd-loader \
-  wayland \
-  wayland-protocols \
-  wget \
-  xorg-server-xvfb \
-  zlib \
-  zsync
+	base-devel        \
+	dav1d             \
+	git               \
+	lame              \
+	lcms2             \
+	libarchive        \
+	libass            \
+	libcdio           \
+	libcdio-paranoia  \
+	libdrm            \
+	libdvdnav         \
+	libdvdread        \
+	libfdk-aac        \
+	libjpeg-turbo     \
+	libogg            \
+	libplacebo        \
+	libpulse          \
+	libsixel          \
+	libx11            \
+	libxext           \
+	libxkbcommon      \
+	libxpresent       \
+	libxrandr         \
+	libxss            \
+	libxv             \
+	luajit            \
+	meson             \
+	nasm              \
+	pulseaudio        \
+	pulseaudio-alsa   \
+	rubberband        \
+	openal            \
+	uchardet          \
+	vulkan-headers    \
+	vulkan-icd-loader \
+	wayland           \
+	wayland-protocols \
+	wget              \
+	xorg-server-xvfb  \
+	zlib              \
+	zsync
 
-#if [ "$(uname -m)" = 'x86_64' ]; then
-#	pacman -Syu --noconfirm vulkan-intel haskell-gnutls gcc13 svt-av1
-#else
-#	pacman -Syu --noconfirm vulkan-freedreno vulkan-panfrost
-#fi
-
-echo "Installing debloated pckages..."
+echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
-wget --retry-connrefused --tries=30 "$LIBXML_URL" -O ./libxml2-iculess.pkg.tar.zst
-wget --retry-connrefused --tries=30 "$FFMPEG_URL" -O ./ffmpeg-mini.pkg.tar.zst
-wget --retry-connrefused --tries=30 "$OPUS_URL" -O ./opus-nano.pkg.tar.zst
-pacman -U --noconfirm ./*.pkg.tar.zst
-rm -f ./*.pkg.tar.zst
+wget --retry-connrefused --tries=30 "$EXTRA_PACKAGES" -O ./get-debloated-pkgs.sh
+chmod +x ./get-debloated-pkgs.sh
+./get-debloated-pkgs.sh --add-mesa --prefer-nano libxml2-mini opus-mini
 
-# Remove vapoursynth since ffmpeg-mini doesn't link to it
-pacman -Rsndd --noconfirm vapoursynth
+echo "Building mpv..."
+echo "---------------------------------------------------------------"
+git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build 
+
+cd ./mpv-build
+echo "--enable-libdav1d"      >> ./ffmpeg_options
+echo "--enable-small"         >> ./ffmpeg_options
+echo "-Dlibmpv=false"         >> ./mpv_options
+echo "-Dlibbluray=disabled"   >> ./mpv_options
+echo "-Dvapoursynth=disabled" >> ./mpv_options
+
+# install in /usr rather than /usr/local
+sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
+
+./rebuild -j$(nproc)
+sudo ./install
+/usr/bin/mpv --version | awk '{print $2; exit}' > ~/version
 
 echo "All done!"
 echo "---------------------------------------------------------------"
