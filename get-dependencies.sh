@@ -62,9 +62,9 @@ git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build
 cd ./mpv-build
 printf "%s\n" "--enable-libdav1d" >> ffmpeg_options
 printf "%s\n" "--enable-small" >> ffmpeg_options
-
+printf "%s\n" "-Dlibmpv=false" >> mpv_options
 # install in /usr rather than /usr/local
-#sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
+sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
 
 ./rebuild -j$(nproc)
 sudo ./install
