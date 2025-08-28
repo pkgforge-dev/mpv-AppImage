@@ -69,6 +69,7 @@ sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-c
 ./use-mpv-release
 ./rebuild -j$(nproc)
 sudo ./install
+/usr/bin/mpv --version | awk '{print $2; exit}' > ~/version
 
 echo "All done!"
 echo "---------------------------------------------------------------"
