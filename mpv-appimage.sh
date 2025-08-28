@@ -9,22 +9,11 @@
 set -eux
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
-REPO="https://github.com/mpv-player/mpv-build.git"
 URUNTIME="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-$ARCH"
 URUNTIME_LITE="https://github.com/VHSgunzo/uruntime/releases/latest/download/uruntime-appimage-dwarfs-lite-$ARCH"
 UPINFO="gh-releases-zsync|$(echo "$GITHUB_REPOSITORY" | tr '/' '|')|latest|*$ARCH.AppImage.zsync"
 LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
 
-# Build mpv
-git clone "$REPO" ./mpv-build && (
-	cd ./mpv-build
-	printf "%s\n" "--enable-libdav1d" >> ffmpeg_options
-	printf "%s\n" "--enable-small" >> ffmpeg_options
-	printf "%s\n" "-Dlibmpv=false" >> mpv_options
-	./rebuild -j$(nproc)
-	sudo ./install
-)
-rm -rf ./mpv-build
 
 # bundle libs
 mkdir -p ./AppDir
