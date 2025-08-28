@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -e
+
+CURRENTDIR="$(cd "${0%/*}" && echo "$PWD")"
+CACHEDIR="${XDG_CACHE_HOME:-$HOME/.cache}"
+YTDLP="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"
+
+export PATH="$PATH:$CACHEDIR/mpv-appimage_yt-dlp"
+
+# additional scripts can be placed in the top level bin dir
+# those with a name that ends up .hook will be executed in teh current shell
+# while those that end with bg.hook will be executed in the background
+for hook in "$CURRENTDIR"/bin/*.hook; do
+	[ -x "$hook" ] || continue
+	case "$hook" in
+		*.bg.hook) >&2 echo "exec bg hook: $hook"; "$hook" &;;
+		*.hook)    >&2 echo "exec hook: $hook";    "$hook"  ;;
+	esac
+done
+
+_get_ytdlp() {
+	>&2 echo "Video link detected but yt-dlp is not installed, installing..."
+	mkdir -p "$CACHEDIR"/mpv-appimage_yt-dlp
+
+	if command -v wget >/dev/null 2>&1; then
+		wget -q "$YTDLP" -O "$CACHEDIR"/mpv-appimage_yt-dlp/yt-dlp
+	elif command -v curl >/dev/null 2>&1; then
+		curl -Ls "$YTDLP" -o "$CACHEDIR"/mpv-appimage_yt-dlp/yt-dlp
+	else
+		>&2 echo "ERROR: You need wget or curl to download yt-dlp!"
+	fi
+	chmod +x "$CACHEDIR"/mpv-appimage_yt-dlp/yt-dlp 2>/dev/null
+}
+
+if [ -z "$1" ]; then
+	set -- "--player-operation-mode=pseudo-gui"
+elif ! command -v yt-dlp 1>/dev/null; then
+	for link do
+		case "$link" in
+			*http*) _get_tydlp || true;;
+		esac
+	done
+fi
+
+exec "$CURRENTDIR"/bin/mpv "$@"
