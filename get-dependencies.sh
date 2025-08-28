@@ -6,57 +6,46 @@ EXTRA_PACKAGES="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImage
 echo "Installing build dependencies..."
 echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
-  alsa-lib \
-  base-devel \
-  desktop-file-utils \
-  ffmpeg \
-  git \
-  glibc \
-  hicolor-icon-theme \
-  jack \
-  lcms2 \
-  libarchive \
-  libass \
-  libbluray \
-  libcdio \
-  libcdio-paranoia \
-  libdrm \
-  libdvdnav \
-  libdvdread \
-  libegl \
-  libgl \
-  libglvnd \
-  libjpeg-turbo \
-  libplacebo \
-  libpulse \
-  libsixel \
-  libva \
-  libvdpau \
-  libx11 \
-  libxext \
-  libxkbcommon \
-  libxpresent \
-  libxrandr \
-  libxss \
-  libxv \
-  luajit \
-  mesa \
-  meson \
-  nasm \
-  patchelf \
-  libpipewire \
-  rubberband \
-  openal \
-  uchardet \
-  vulkan-headers \
-  vulkan-icd-loader \
-  wayland \
-  wayland-protocols \
-  wget \
-  xorg-server-xvfb \
-  zlib \
-  zsync
-
+	base-devel        \
+	git               \
+	jack              \
+	lcms2             \
+	libarchive        \
+	libass            \
+	libbluray         \
+	libcdio           \
+	libcdio-paranoia  \
+	libdrm            \
+	libdvdnav         \
+	libdvdread        \
+	libjpeg-turbo     \
+	libplacebo        \
+	libpulse          \
+	libsixel          \
+	libx11            \
+	libxext           \
+	libxkbcommon      \
+	libxpresent       \
+	libxrandr         \
+	libxss            \
+	libxv             \
+	luajit            \
+	meson             \
+	nasm              \
+	pipewire-audio    \
+	pulseaudio        \
+	pulseaudio-alsa   \
+	rubberband        \
+	openal            \
+	uchardet          \
+	vulkan-headers    \
+	vulkan-icd-loader \
+	wayland           \
+	wayland-protocols \
+	wget              \
+	xorg-server-xvfb  \
+	zlib              \
+	zsync
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -73,8 +62,10 @@ git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build
 cd ./mpv-build
 printf "%s\n" "--enable-libdav1d" >> ffmpeg_options
 printf "%s\n" "--enable-small" >> ffmpeg_options
+printf "%s\n" "-Dlibmpv=false" >> mpv_options
+# install in /usr rather than /usr/local
+sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
 
-./use-mpv-release
 ./rebuild -j$(nproc)
 sudo ./install
 /usr/bin/mpv --version | awk '{print $2; exit}' > ~/version
