@@ -9,7 +9,7 @@ YTDLP="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"
 export PATH="$PATH:$CACHEDIR/mpv-appimage_yt-dlp"
 
 # additional scripts can be placed in the top level bin dir
-# those with a name that ends up .hook will be executed in teh current shell
+# those with a name that ends with .hook will be executed in the current shell
 # while those that end with bg.hook will be executed in the background
 for hook in "$CURRENTDIR"/bin/*.hook; do
 	[ -x "$hook" ] || continue
