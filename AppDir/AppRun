@@ -38,7 +38,7 @@ if [ -z "$1" ]; then
 elif ! command -v yt-dlp 1>/dev/null; then
 	for link do
 		case "$link" in
-			*http*) _get_tydlp || true;;
+			*http*) _get_ytdlp || true;;
 		esac
 	done
 fi
