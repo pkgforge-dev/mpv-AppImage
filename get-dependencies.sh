@@ -55,11 +55,11 @@ echo "---------------------------------------------------------------"
 git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build 
 
 cd ./mpv-build
-echo "--enable-libdav1d"   >> ffmpeg_options
-echo "--enable-small"      >> ffmpeg_options
-echo "-Dlibmpv=false"      >> mpv_options
-echo "-Dlibbluray=false"   >> mpv_options
-echo "-Dvapoursynth=false" >> mpv_options
+echo "--enable-libdav1d"      >> ./ffmpeg_options
+echo "--enable-small"         >> ./ffmpeg_options
+echo "-Dlibmpv=false"         >> ./mpv_options
+echo "-Dlibbluray=disabled"   >> ./mpv_options
+echo "-Dvapoursynth=disabled" >> ./mpv_options
 
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
