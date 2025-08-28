@@ -8,11 +8,9 @@ echo "---------------------------------------------------------------"
 pacman -Syu --noconfirm \
 	base-devel        \
 	git               \
-	jack              \
 	lcms2             \
 	libarchive        \
 	libass            \
-	libbluray         \
 	libcdio           \
 	libcdio-paranoia  \
 	libdrm            \
@@ -32,7 +30,6 @@ pacman -Syu --noconfirm \
 	luajit            \
 	meson             \
 	nasm              \
-	pipewire-audio    \
 	pulseaudio        \
 	pulseaudio-alsa   \
 	rubberband        \
