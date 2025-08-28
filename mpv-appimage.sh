@@ -14,7 +14,6 @@ export ICON=/usr/share/icons/hicolor/128x128/apps/mpv.png
 export OUTNAME=mpv-"$VERSION"-anylinux-"$ARCH".AppImage
 export DEPLOY_OPENGL=1
 export DEPLOY_VULKAN=1
-export DEPLOY_PIPEWIRE=1
 export URUNTIME_PRELOAD=1
 
 # ADD LIBRARIES
