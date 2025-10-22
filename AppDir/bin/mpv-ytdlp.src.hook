@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# We need to add --player-operation-mode=pseudo-gui when no args are given,
+# otherwise no GUI will open when the user double clicks on the AppImage
+
+# We also need to check that yt-dlp is in PATH when links are given,
+# otherwise download yt-dlp and add it to PATH
+
+YTDLP_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"/mpv-appimage_yt-dlp
+YTDLP="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"
+
+export PATH="$PATH:$YTDLP_DIR"
+
+_get_ytdlp() {
+	>&2 echo "Video link detected but yt-dlp is not installed, installing..."
+	mkdir -p "$YTDLP_DIR"
+
+	if command -v wget 1>/dev/null; then
+		wget -q "$YTDLP" -O "$YTDLP_DIR"/yt-dlp
+	elif command -v curl 1>/dev/null; then
+		curl -Ls "$YTDLP" -o "$YTDLP_DIR"/yt-dlp
+	else
+		>&2 echo "ERROR: You need wget or curl to download yt-dlp!"
+	fi
+	chmod +x "$YTDLP_DIR"/yt-dlp 2>/dev/null
+}
+
+if [ -z "$1" ]; then
+	set -- "--player-operation-mode=pseudo-gui"
+elif ! command -v yt-dlp 1>/dev/null; then
+	for link do
+		case "$link" in
+			*http*) _get_ytdlp || :;;
+		esac
+	done
+fi
