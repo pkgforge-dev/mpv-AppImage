@@ -5,8 +5,8 @@ set -eux
 ARCH="$(uname -m)"
 VERSION="$(cat ~/version)"
 SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-URUNTIME="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/uruntime2appimage.sh"
 
+export OUTPUT_APPIMAGE=1
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/mpv.desktop
@@ -20,11 +20,6 @@ export URUNTIME_PRELOAD=1
 wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
 chmod +x ./quick-sharun
 ./quick-sharun /usr/bin/mpv
-
-# MAKE APPIMAGE WITH URUNTIME
-wget --retry-connrefused --tries=30 "$URUNTIME" -O ./uruntime2appimage
-chmod +x ./uruntime2appimage
-./uruntime2appimage
 
 UPINFO="$(echo "$UPINFO" | sed 's#.AppImage#*.AppBundle#g')"
 wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
