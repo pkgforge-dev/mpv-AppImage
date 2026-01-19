@@ -19,17 +19,25 @@ pacman -Syu --noconfirm \
 	libjpeg-turbo     \
 	libogg            \
 	libplacebo        \
+	libpulse          \
 	libsixel          \
 	libx11            \
 	libxext           \
+	libxkbcommon      \
+	libxpresent       \
+	libxrandr         \
+	libxss            \
 	libxv             \
 	luajit            \
 	meson             \
 	nasm              \
+	pulseaudio        \
+	pulseaudio-alsa   \
 	rubberband        \
 	openal            \
 	uchardet          \
 	vulkan-headers    \
+	vulkan-icd-loader \
 	wayland           \
 	wayland-protocols \
 	wget              \
