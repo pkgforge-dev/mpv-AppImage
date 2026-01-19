@@ -20,7 +20,6 @@ pacman -Syu --noconfirm \
 	libogg            \
 	libplacebo        \
 	libpulse          \
-	libsixel          \
 	libx11            \
 	libxext           \
 	libxkbcommon      \
@@ -56,6 +55,7 @@ cd ./mpv-build
 echo "--enable-libdav1d"      >> ./ffmpeg_options
 echo "--enable-small"         >> ./ffmpeg_options
 echo "--enable-libshaderc"    >> ./ffmpeg_options
+echo "--disable-librsvg"      >> ./ffmpeg_options
 echo "-Dlibmpv=false"         >> ./mpv_options
 echo "-Dlibbluray=disabled"   >> ./mpv_options
 echo "-Dvapoursynth=disabled" >> ./mpv_options
