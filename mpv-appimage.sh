@@ -1,12 +1,11 @@
 #!/bin/sh
 
-set -eux
+set -eu
 
-ARCH="$(uname -m)"
-VERSION="$(cat ~/version)"
-SHARUN="https://raw.githubusercontent.com/pkgforge-dev/Anylinux-AppImages/refs/heads/main/useful-tools/quick-sharun.sh"
-
-export OUTPUT_APPIMAGE=1
+ARCH=$(uname -m)
+VERSION=$(cat ~/version)
+export ARCH VERSION
+export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/mpv.desktop
@@ -16,11 +15,13 @@ export DEPLOY_OPENGL=1
 export DEPLOY_VULKAN=1
 export URUNTIME_PRELOAD=1
 
-# ADD LIBRARIES
-wget --retry-connrefused --tries=30 "$SHARUN" -O ./quick-sharun
-chmod +x ./quick-sharun
-./quick-sharun /usr/bin/mpv
+# Deploy dependencies
+quick-sharun /usr/bin/mpv
 
+# Turn AppDir into AppImage
+quick-sharun --make-appimage
+
+# make appbundle
 UPINFO="$(echo "$UPINFO" | sed 's#.AppImage#*.AppBundle#g')"
 wget -O ./pelf "https://github.com/xplshn/pelf/releases/latest/download/pelf_$ARCH"
 chmod +x ./pelf
@@ -32,11 +33,8 @@ echo "Generating [dwfs]AppBundle..."
 	--add-updinfo "$UPINFO" \
 	--compression "-C zstd:level=22 -S26 -B8" \
 	--output-to mpv-"$VERSION"-anylinux-"$ARCH".dwfs.AppBundle
-
 zsyncmake *.AppBundle -u *.AppBundle
 
 mkdir -p ./dist
-mv -v ./*.AppImage*  ./dist
 mv -v ./*.AppBundle* ./dist
-mv -v ~/version      ./dist
 echo "All Done!"
