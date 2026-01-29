@@ -52,6 +52,13 @@ echo "Building mpv..."
 echo "---------------------------------------------------------------"
 git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build 
 cd ./mpv-build
+
+if [ "${DEVEL_RELEASE-}" = 1 ]; then
+	./use-mpv-master
+else
+	./use-mpv-release
+fi
+
 echo "--enable-libdav1d"      >> ./ffmpeg_options
 echo "--enable-small"         >> ./ffmpeg_options
 echo "--enable-libshaderc"    >> ./ffmpeg_options
