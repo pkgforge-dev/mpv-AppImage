@@ -15,7 +15,7 @@ export DEPLOY_VULKAN=1
 export URUNTIME_PRELOAD=1
 
 # Deploy dependencies
-quick-sharun /PATH/TO/BINARY_AND_LIBRARIES_HERE
+quick-sharun /usr/bin/mpv
 
 # Additional changes can be done in between here
 
