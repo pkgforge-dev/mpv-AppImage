@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/false
 
 # We need to add --player-operation-mode=pseudo-gui when no args are given,
 # otherwise no GUI will open when the user double clicks on the AppImage
@@ -6,23 +6,32 @@
 # We also need to check that yt-dlp is in PATH when links are given,
 # otherwise download yt-dlp and add it to PATH
 
-YTDLP_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"/mpv-appimage_yt-dlp
-YTDLP="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"
+_target_dir=${XDG_BIN_HOME:-~/.local/bin}
+PATH=$PATH:$_target_dir
+export PATH
 
-export PATH="$PATH:$YTDLP_DIR"
+_is_cmd() {
+	for cmd do
+		command -v "$cmd" 1>/dev/null || return 1
+	done
+	return 0
+}
+
+_download() {
+	if _is_cmd wget;   then _download_cmd=wget; set -- -qO "$@"
+	elif _is_cmd curl; then _download_cmd=curl; set -- -Lso "$@"
+	else _err_msg "ERROR: We need wget or curl to download $1"; return 1
+	fi
+	"$_download_cmd" "$@"
+}
 
 _get_ytdlp() {
 	>&2 echo "Video link detected but yt-dlp is not installed, installing..."
-	mkdir -p "$YTDLP_DIR"
-
-	if command -v wget 1>/dev/null; then
-		wget -q "$YTDLP" -O "$YTDLP_DIR"/yt-dlp
-	elif command -v curl 1>/dev/null; then
-		curl -Ls "$YTDLP" -o "$YTDLP_DIR"/yt-dlp
-	else
-		>&2 echo "ERROR: You need wget or curl to download yt-dlp!"
-	fi
-	chmod +x "$YTDLP_DIR"/yt-dlp 2>/dev/null
+	mkdir -p "$_target_dir"
+	_ytdlp_link=$(_download - https://api.github.com/repos/pkgforge-dev/yt-dlp-AppImage/releases \
+	  | sed 's/[()",{} ]/\n/g' | grep -oi "https.*$APPIMAGE_ARCH.*AppImage$" | head -1)
+	_download "$_target_dir"/yt-dlp "$_ytdlp_link"
+	chmod +x "$_target_dir"/yt-dlp
 }
 
 if [ -z "$1" ]; then
