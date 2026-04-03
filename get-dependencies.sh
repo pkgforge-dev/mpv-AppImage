@@ -33,6 +33,7 @@ pacman -Syu --noconfirm \
 	pulseaudio        \
 	pulseaudio-alsa   \
 	rubberband        \
+	spirv-headers     \
 	openal            \
 	uchardet          \
 	vulkan-headers    \
