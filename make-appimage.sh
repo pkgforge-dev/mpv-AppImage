@@ -20,7 +20,7 @@ quick-sharun /usr/bin/mpv
 # mpv only supports LC_NUMERIC=C or LC_NUMERIC=C.UTF-8
 # https://github.com/mpv-player/mpv/blob/c41ee4b95fa8d9827be943247249eae56b372847/player/main.c#L248-L264
 # so we cannot be relying on anylinux.so to set the locale to anything else
-echo 'LC_NUMERIC=C.UTF-8' >> ./AppDir/.env
+echo 'LC_ALL=C.UTF-8' >> ./AppDir/.env
 
 # Additional changes can be done in between here
 
