@@ -51,7 +51,7 @@ get-debloated-pkgs --add-common --prefer-nano
 
 echo "Building mpv..."
 echo "---------------------------------------------------------------"
-git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build 
+git clone "https://github.com/mpv-player/mpv-build.git" ./mpv-build
 cd ./mpv-build
 
 if [ "${DEVEL_RELEASE-}" = 1 ]; then
@@ -69,6 +69,8 @@ echo "--disable-librsvg"      >> ./ffmpeg_options
 echo "-Dlibmpv=false"         >> ./mpv_options
 echo "-Dlibbluray=disabled"   >> ./mpv_options
 echo "-Dvapoursynth=disabled" >> ./mpv_options
+echo "-Dpipewire=disabled"    >> ./mpv_options
+echo "-Drubberband=disabled"  >> ./mpv_options
 
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
