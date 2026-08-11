@@ -29,6 +29,7 @@ pacman -Syu --noconfirm \
 	libxv             \
 	luajit            \
 	meson             \
+	mold              \
 	nasm              \
 	pulseaudio        \
 	pulseaudio-alsa   \
@@ -73,6 +74,15 @@ echo "-Dlibbluray=disabled"   >> ./mpv_options
 echo "-Dvapoursynth=disabled" >> ./mpv_options
 echo "-Dpipewire=disabled"    >> ./mpv_options
 echo "-Drubberband=disabled"  >> ./mpv_options
+
+LTO_CFLAGS="-ffunction-sections -fdata-sections"
+LTO_LDFLAGS="-fuse-ld=mold -Wl,--gc-sections -Wl,--icf=safe"
+echo "--enable-lto"                         >> ./ffmpeg_options
+echo "--extra-cflags=$LTO_CFLAGS"           >> ./ffmpeg_options
+echo "--extra-ldflags=-flto $LTO_LDFLAGS"   >> ./ffmpeg_options
+echo "-Db_lto=true"                         >> ./mpv_options
+echo "-Dc_args=$LTO_CFLAGS"                 >> ./mpv_options
+echo "-Dc_link_args=$LTO_LDFLAGS -s"        >> ./mpv_options
 
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
