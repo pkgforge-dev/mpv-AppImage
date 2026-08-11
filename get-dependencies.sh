@@ -62,6 +62,8 @@ fi
 
 echo "--enable-libdav1d"      >> ./ffmpeg_options
 echo "--enable-small"         >> ./ffmpeg_options
+echo "--disable-gnutls"       >> ./ffmpeg_options
+echo "--enable-openssl"       >> ./ffmpeg_options
 echo "--disable-librsvg"      >> ./ffmpeg_options
 echo "-Dlibmpv=false"         >> ./mpv_options
 echo "-Dlibbluray=disabled"   >> ./mpv_options
