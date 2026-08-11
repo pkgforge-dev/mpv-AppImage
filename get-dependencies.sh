@@ -60,19 +60,25 @@ else
 	./use-mpv-release
 fi
 
-echo "--enable-libdav1d"      >> ./ffmpeg_options
-echo "--enable-small"         >> ./ffmpeg_options
-echo "--disable-gnutls"       >> ./ffmpeg_options
-echo "--enable-openssl"       >> ./ffmpeg_options
-echo "--enable-version3"      >> ./ffmpeg_options
-echo "--disable-librsvg"      >> ./ffmpeg_options
-echo "--disable-programs"     >> ./ffmpeg_options
-echo "--disable-encoders"     >> ./ffmpeg_options
-echo "-Dlibmpv=false"         >> ./mpv_options
-echo "-Dlibbluray=disabled"   >> ./mpv_options
-echo "-Dvapoursynth=disabled" >> ./mpv_options
-echo "-Dpipewire=disabled"    >> ./mpv_options
-echo "-Drubberband=disabled"  >> ./mpv_options
+echo "--enable-libdav1d"       >> ./ffmpeg_options
+echo "--enable-small"          >> ./ffmpeg_options
+echo "--disable-gnutls"        >> ./ffmpeg_options
+echo "--enable-openssl"        >> ./ffmpeg_options
+echo "--enable-version3"       >> ./ffmpeg_options
+echo "--disable-librsvg"       >> ./ffmpeg_options
+echo "--disable-programs"      >> ./ffmpeg_options
+echo "--disable-encoders"      >> ./ffmpeg_options
+echo "--disable-muxers"        >> ./ffmpeg_options
+echo "--enable-muxer=mp4"      >> ./ffmpeg_options
+echo "--enable-muxer=matroska" >> ./ffmpeg_options
+echo "--enable-muxer=webm"     >> ./ffmpeg_options
+echo "--disable-avdevice"      >> ./ffmpeg_options
+echo "-Dlibmpv=false"          >> ./mpv_options
+echo "-Dlibbluray=disabled"    >> ./mpv_options
+echo "-Dvapoursynth=disabled"  >> ./mpv_options
+echo "-Dpipewire=disabled"     >> ./mpv_options
+echo "-Drubberband=disabled"   >> ./mpv_options
+echo "-Dlibavdevice=disabled"  >> ./mpv_options
 
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
