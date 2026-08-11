@@ -66,6 +66,8 @@ echo "--disable-gnutls"       >> ./ffmpeg_options
 echo "--enable-openssl"       >> ./ffmpeg_options
 echo "--enable-version3"      >> ./ffmpeg_options
 echo "--disable-librsvg"      >> ./ffmpeg_options
+echo "--disable-programs"     >> ./ffmpeg_options
+echo "--disable-encoders"     >> ./ffmpeg_options
 echo "-Dlibmpv=false"         >> ./mpv_options
 echo "-Dlibbluray=disabled"   >> ./mpv_options
 echo "-Dvapoursynth=disabled" >> ./mpv_options
