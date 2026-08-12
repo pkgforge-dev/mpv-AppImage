@@ -72,6 +72,7 @@ echo "--disable-muxers"        >> ./ffmpeg_options
 echo "--enable-muxer=mp4"      >> ./ffmpeg_options
 echo "--enable-muxer=matroska" >> ./ffmpeg_options
 echo "--enable-muxer=webm"     >> ./ffmpeg_options
+echo "--enable-muxer=image2"   >> ./ffmpeg_options
 echo "--disable-avdevice"      >> ./ffmpeg_options
 echo "-Dlibmpv=false"          >> ./mpv_options
 echo "-Dlibbluray=disabled"    >> ./mpv_options
