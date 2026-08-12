@@ -68,6 +68,7 @@ echo "--enable-version3"       >> ./ffmpeg_options
 echo "--disable-librsvg"       >> ./ffmpeg_options
 echo "--disable-programs"      >> ./ffmpeg_options
 echo "--disable-encoders"      >> ./ffmpeg_options
+echo "--enable-encoder=rawvideo" >> ./ffmpeg_options
 echo "--disable-muxers"        >> ./ffmpeg_options
 echo "--enable-muxer=mp4"      >> ./ffmpeg_options
 echo "--enable-muxer=matroska" >> ./ffmpeg_options
