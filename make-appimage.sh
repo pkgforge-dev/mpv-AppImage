@@ -5,7 +5,7 @@ set -eu
 ARCH=$(uname -m)
 export ARCH VERSION
 export OUTPATH=./dist
-export ADD_HOOKS="self-updater.bg.hook:get-yt-dlp.src.hook"
+export ADD_HOOKS="self-updater.hook:get-yt-dlp.hook"
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
 export DESKTOP=/usr/share/applications/mpv.desktop
 export ICON=/usr/share/icons/hicolor/128x128/apps/mpv.png
@@ -21,8 +21,6 @@ quick-sharun /usr/bin/mpv
 # https://github.com/mpv-player/mpv/blob/c41ee4b95fa8d9827be943247249eae56b372847/player/main.c#L248-L264
 # so we cannot be relying on anylinux.so to set the locale to anything else
 echo 'LC_ALL=C.UTF-8' >> ./AppDir/.env
-
-# Additional changes can be done in between here
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
