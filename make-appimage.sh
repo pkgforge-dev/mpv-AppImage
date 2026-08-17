@@ -22,6 +22,8 @@ quick-sharun /usr/bin/mpv
 # so we cannot be relying on anylinux.so to set the locale to anything else
 echo 'LC_ALL=C.UTF-8' >> ./AppDir/.env
 
+# Additional changes can be done in between here
+
 # Turn AppDir into AppImage
 quick-sharun --make-appimage
 
