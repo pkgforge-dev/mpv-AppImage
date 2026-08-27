@@ -10,8 +10,7 @@ export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}
 export DESKTOP=/usr/share/applications/mpv.desktop
 export ICON=/usr/share/icons/hicolor/128x128/apps/mpv.png
 export APPNAME=mpv
-export DEPLOY_OPENGL=1
-export DEPLOY_VULKAN=1
+export USE_HOST_DRIVERS_EXPERIMENTAL=1
 export URUNTIME_PRELOAD=1
 
 # Deploy dependencies
