@@ -86,7 +86,17 @@ echo "-Dlibavdevice=disabled"  >> ./mpv_options
 # install in /usr rather than /usr/local
 sed -i -e 's|meson setup build|meson setup build --prefix=/usr|' ./scripts/mpv-config
 
-./rebuild -j$(nproc)
+# Same as ./rebuild, with the ffmpeg sources patched in between.
+# --enable-small makes ffmpeg drop the codec names (codec_desc.c) and the
+# profile names (profiles.c), so mpv prints no codec and no "HW:" line in its
+# stats overlay, which looks like hardware decoding is off.
+# codec_desc.c refers to the tables of profiles.c, so both need the patch.
+export LC_ALL=C
+./update
+sed -i 's/NULL_IF_CONFIG_SMALL(\(.*\)),$/\1,/' ./ffmpeg/libavcodec/codec_desc.c
+sed -i 's/^#if !CONFIG_SMALL$/#if 1/' ./ffmpeg/libavcodec/profiles.c
+./clean
+./build -j$(nproc)
 sudo ./install
 /usr/bin/mpv --version | awk '{print $2; exit}' > ~/version
 
